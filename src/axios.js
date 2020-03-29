@@ -8,7 +8,7 @@ instance.defaults.headers.common['Authorization'] = 'AUTH TOKEN FROM INSTANCE';
 
 // interceptor
 instance.interceptors.request.use(request => {
-  //console.log(request);
+  console.log(request);
   return request;
 }, err => {
   console.log(err);
