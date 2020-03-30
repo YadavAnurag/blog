@@ -1,6 +1,8 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 
 import Post from '../../../components/Post/Post';
+import FullPost from '../FullPost/FullPost';
 import axios from '../../../axios';
 import './Posts.css';
 
@@ -24,7 +26,7 @@ class Posts extends React.Component{
   }
 
   postSelectedHandler = (id) => {
-    this.props.history.push({pathname: '/' + id});
+    this.props.history.push({pathname: '/posts/' + id});
   }
 
   render(){
@@ -43,9 +45,12 @@ class Posts extends React.Component{
     }
 
     return (
-      <section className="Posts">
-        {posts}
-      </section>
+      <div>
+        <section className="Posts">
+          {posts}
+        </section>
+        <Route path={this.props.match.url + '/:id'} exact component={FullPost} /> {/* nested route must have absolute path  */}
+      </div>
     );
   }
 }
