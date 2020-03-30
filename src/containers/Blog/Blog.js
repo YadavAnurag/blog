@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 
 import { Route, NavLink, withRouter, Switch, Redirect } from 'react-router-dom';
 import asyncComponent from '../../hoc/asyncComponent';
@@ -8,7 +8,7 @@ import './Blog.css';
 const AsyncNewPost = asyncComponent(() => {
   return import('./NewPost/NewPost');
 });
-
+const LazyNotFound = React.lazy(() => import('../../components/NotFound/NotFound')); // lazy loading like HOC asyncComponent (support >= React 16.6)
 
 class Blog extends Component {
   render () {
@@ -40,6 +40,11 @@ class Blog extends Component {
         <Switch>
           <Route path='/new-post' component={AsyncNewPost} />
           <Route path='/posts' component={Posts} />
+          <Route render={() => (
+            <Suspense fallback={<div>Loading...</div>}>
+              <LazyNotFound />
+            </Suspense>
+          )} />
           <Redirect from='/' to='/posts' />
         </Switch>
       </div>
