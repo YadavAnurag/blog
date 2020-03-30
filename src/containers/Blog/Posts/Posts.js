@@ -4,6 +4,7 @@ import Post from '../../../components/Post/Post';
 import axios from '../../../axios';
 import './Posts.css';
 
+
 class Posts extends React.Component{
   state = {
     posts: [],
@@ -12,18 +13,19 @@ class Posts extends React.Component{
   }
 
   componentDidMount(){
-    console.log(this.props);
-    // axios.get('/posts')
-    //   .then(response => {
-    //     const posts = response.data.slice(0, 4);
-    //     const updatedPosts = posts.map(post => ({...post, author: 'Anu'}));
+    axios.get('/posts')
+      .then(response => {
+        const posts = response.data.slice(0, 4);
+        const updatedPosts = posts.map(post => ({...post, author: 'Anu'}));
 
-    //     this.setState({posts: updatedPosts});
-    //   })
-    //   .catch(error => this.setState({error: true}));
+        this.setState({posts: updatedPosts});
+      })
+      .catch(error => this.setState({error: true}));
   }
 
-  postSelectedHandler = (id) => this.setState({selectedPostId: id});
+  postSelectedHandler = (id) => {
+    this.props.history.push({pathname: '/' + id});
+  }
 
   render(){
     let posts = <p style={{textAlign: 'center'}}>Something went wrong...!</p>;
@@ -34,7 +36,8 @@ class Posts extends React.Component{
             key={post.id}
             title={post.title}
             author={post.author}
-            clicked={() => this.postSelectedHandler(post.id)}/>
+            clicked={() => this.postSelectedHandler(post.id)}
+          />
         )
       );
     }
